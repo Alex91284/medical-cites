@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="combo_type_cites">}
+        <item>Select type of cite</item>
+        <item>Médico General</item>
+        <item>Médico Especialista</item>
+    </string-array>
+
+</resources>
