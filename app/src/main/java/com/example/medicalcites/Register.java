@@ -29,6 +29,8 @@ public class Register extends AppCompatActivity {
     private int dia,mes,anio,hora,minuto;
     private EditText txtDoctor;
     private Button btnRegister;
+    private DataBase_Admin obj_base;
+    private ModelCite obj_cite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class Register extends AppCompatActivity {
         btnTime = (ImageButton) findViewById(R.id.btnTime);
         txtDoctor = (EditText) findViewById(R.id.txtDoctor);
         btnRegister = (Button) findViewById(R.id.btnRegister);
+        obj_base = new DataBase_Admin();
+        obj_cite = new ModelCite();
 
 
 
@@ -103,8 +107,32 @@ public class Register extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Register.this, "Register", Toast.LENGTH_LONG).show();
+                boolean confirm = obj_base.connectSQL();
+                if(confirm){
+                    Toast.makeText(Register.this, "Successful Connection", Toast.LENGTH_LONG).show();
+                    set_data();
+                    boolean confirm2 = obj_base.insert_record(obj_cite.getName(), obj_cite.getIdentification(),
+                            obj_cite.getType_cite(), obj_cite.getDate(), obj_cite.getTime(), obj_cite.getProfetional());
+                    if(confirm2){
+                        Toast.makeText(Register.this, "Cite Registered", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(Register.this, "Failed Register", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    Toast.makeText(Register.this, "Failed Connection", Toast.LENGTH_LONG).show();
+                }
             }
         });
+    }
+
+    private void set_data (){
+        obj_cite.setName(txtName.getText().toString());
+        obj_cite.setIdentification(Integer.parseInt(txtID.getText().toString()));
+        obj_cite.setType_cite(combo_type_cite.getSelectedItem().toString());
+        obj_cite.setDate(txtDate.getText().toString());
+        obj_cite.setTime(txtTime.getText().toString());
+        obj_cite.setProfetional(txtDoctor.getText().toString());
     }
 }
